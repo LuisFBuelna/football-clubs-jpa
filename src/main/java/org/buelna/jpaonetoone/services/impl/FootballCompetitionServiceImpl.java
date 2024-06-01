@@ -2,6 +2,7 @@ package org.buelna.jpaonetoone.services.impl;
 
 import org.buelna.jpaonetoone.dtos.footballcompetition.FootballCompetitionDto;
 import org.buelna.jpaonetoone.entities.FootballCompetition;
+import org.buelna.jpaonetoone.mappers.FootballCompetitionMapper;
 import org.buelna.jpaonetoone.repositories.FootballCompetitionRepository;
 import org.buelna.jpaonetoone.services.FootballCompetitionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,7 @@ public class FootballCompetitionServiceImpl implements FootballCompetitionServic
         List<FootballCompetitionDto> competitionsDto = new ArrayList<>();
 
         competitions.forEach(competition -> {
-            FootballCompetitionDto competitionDto = new FootballCompetitionDto();
-            competitionDto.setName(competition.getName());
-            competitionDto.setQuantityPrice(competition.getQuantityPrice());
-            competitionDto.setStartDate(competition.getStartDate());
-            competitionDto.setEndDate(competition.getEndDate());
+            FootballCompetitionDto competitionDto = FootballCompetitionMapper.mapper.entityToDto(competition);
 
             competitionsDto.add(competitionDto);
         });
@@ -39,14 +36,8 @@ public class FootballCompetitionServiceImpl implements FootballCompetitionServic
         FootballCompetition competition = competitionRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Competition not found"));
 
-        FootballCompetitionDto competitionDto = new FootballCompetitionDto();
+        return FootballCompetitionMapper.mapper.entityToDto(competition);
 
-        competitionDto.setName(competition.getName());
-        competitionDto.setQuantityPrice(competition.getQuantityPrice());
-        competitionDto.setStartDate(competition.getStartDate());
-        competitionDto.setEndDate(competition.getEndDate());
-
-        return competitionDto;
     }
 
     @Override
